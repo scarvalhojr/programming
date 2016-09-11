@@ -58,7 +58,8 @@ def find_longest_chain(num):
         else:
             longest_chain[n] = n
 
-    first_unknown_number = num + 1
+    if num >= first_unknown_number:
+        first_unknown_number = num + 1
 
     return longest_chain[num]
 
