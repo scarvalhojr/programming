@@ -1,3 +1,3 @@
-# hackerrank
+# programming
 
 Solutions to programming exercises.
