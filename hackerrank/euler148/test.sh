@@ -17,7 +17,7 @@ done
 
 if [ ${SMALL_INPUT_ONLY} -eq 1 ]
 then
-    input_files=$(ls samples/input0[01356].txt)
+    input_files=$(ls samples/input0[0135678].txt)
 else
     input_files=$(ls samples/input??.txt)
 fi

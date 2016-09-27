@@ -3,3 +3,5 @@
 49 49
 343 343
 2401 2401
+
+# All square triangles with a power of 7 number of rows and columns
