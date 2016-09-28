@@ -22,5 +22,15 @@
 def pascal(r, c):
     factorial(r) / (factorial(c) * factorial(r - c))
 
+pascal(6,2) = 6! / (4! * 2!) = 6 * 5 / 2 = 15
 
-pascal(10,7) = 10! / (7! * 3!) = 10 * 9 * 8 / 3!
+
+number of elements in partial triangles:
+
+1
+2  3
+3  5  6
+4  7  9 10
+5  9 12 14
+6 11 15 18
+7 13 18 22
