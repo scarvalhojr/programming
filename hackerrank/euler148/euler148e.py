@@ -5,45 +5,38 @@
 
 from math import log
 from collections import deque
-from logging import getLogger, StreamHandler, DEBUG
-
-
-# Debug log
-#LOG = getLogger(__name__)
-#LOG.addHandler(StreamHandler())
-#LOG.setLevel(DEBUG)
 
 # This is the number we're counting how many elements
 # of the triangle cannot be divided by
 DIV = 7
 
-# The largest power of DIV we will attempt to decompose the input into;
 # MAX_POWER is the largest power p such that DIV ^ p <= 10 ^ 18, which is
-# the largest input we're supposed to handle
+# the largest input we're supposed to handle, so DIV ^ MAX_POWER is the largest
+# dimension of triangles we will attempt to decompose the shapes into
 MAX_POWER = 22
 
 # Results must be reported in modulo 10 ^ 9 + 7
 RESULT_MOD = 10 ** 9 + 7
 
-# Number of non-divisible elements in a "square" triangle
-# (with dimensions that are a power of DIV)
-square_non_div = [(((DIV ** 2 + DIV) / 2) ** power) % RESULT_MOD
-                  for power in range(MAX_POWER + 1)]
+# Number of non-divisible elements in a shape of given number of rows, columns
+non_div = {(0,0): 0}
 
-# Dictionary with the number of elements in a shape
-# with a given number of rows and columns
-num_elements = {(0,0): 0}
+# Pre-compute the number of elements in shapes up to DIV x DIV,
+# all of which are non-divisible by DIV
 for cols in range(1, DIV + 1):
-    num_elements[(cols, cols)] = num_elements[(cols - 1, cols - 1)] + cols
+    non_div[(cols, cols)] = non_div[(cols - 1, cols - 1)] + cols
     for rows in range(cols + 1, DIV + 1):
-        num_elements[(rows,cols)] = num_elements[(rows - 1,cols)] + cols
+        non_div[(rows,cols)] = non_div[(rows - 1,cols)] + cols
+
+# Pre-compute the number of non-divisible elements in triangles whose number of
+# rows and columns is a power of DIV
+for power in range(2, MAX_POWER + 1):
+    non_div[(DIV ** power, DIV ** power)] = ((DIV ** 2 + DIV) / 2) ** power
 
 
 def count_non_div(rows, cols):
 
-    #LOG.debug("count_non_div(%d, %d)" % (rows, cols))
-
-    #assert rows >= 0 and cols >= 0 and cols <= rows
+    # assert rows >= 0 and cols >= 0 and cols <= rows
 
     shapes = deque()
     shapes.append((1, rows, cols))
@@ -54,59 +47,56 @@ def count_non_div(rows, cols):
 
         mult, rows, cols = shapes.pop()
 
-        if rows <= DIV:
-            count += mult * num_elements[(rows, cols)]
+        if (rows,cols) in non_div:
+            count = (count + mult * non_div[(rows, cols)]) % RESULT_MOD
             continue
 
-        # find the largest "square" triangle that
-        # the shape can be decomposed into
-        power = int(log(cols, DIV))
-        dim = DIV ** power
-
-        #LOG.debug("largest 'square' triangle has dim = %d" % dim)
+        # Find the dimension of the largest "square" triangle that
+        # the given shape could be decomposed into
+        dim = DIV ** int(log(cols, DIV))
 
         if rows > dim * DIV:
-            #LOG.debug("tall shape...")
-            shapes.append((mult, rows - dim * DIV, min(rows - dim * DIV, cols)))
 
-            rows = dim * DIV
-            #LOG.debug("cut shape to %d rows" % rows)
+            # This is a "tall" shape
+            dim = DIV ** int(log(rows, DIV))
+            if rows == dim:
+                dim = dim / DIV
 
-            if rows <= DIV:
-                count += mult * num_elements[(rows, cols)]
-                continue
+            # The central part
+            shapes.append((mult * (rows / dim), dim, cols))
 
-        # number of "square" triangles that fit
-        # inside the given triangle
-        triangles = num_elements[(rows/dim, cols/dim)]
+            # The south part
+            south_rows = rows - dim * (rows / dim)
+            if south_rows > 0:
+                shapes.append((mult, south_rows, min(south_rows, cols)))
 
-        # the total number of non divisible elements, starting
-        # with the elements in all "square" triangles
-        count += mult * triangles * square_non_div[power]
+            continue
 
-        #LOG.debug("%d 'square' triangles found" % (triangles))
-
+        # Decompose the shape into four parts: central (with "square" triangles),
+        # south, east, and south-east
         south_rows = rows - dim * (rows / dim)
         east_cols = cols - dim * (cols / dim)
         south_cols = cols - east_cols
         east_rows = rows - south_rows + east_cols - cols
 
-        #LOG.debug("south_rows: %d, south_cols: %d, east_rows: %d, east_cols: %d" % (south_rows, south_cols, east_rows, east_cols))
-
-        #assert south_rows < dim and east_cols < dim
-        #assert south_cols % dim == 0
-        #assert east_rows % dim == 0
+        # Central part: we can use the non_div dictionary to calculate the
+        # number of "square" triangles that fit inside the central part
+        count += mult * non_div[(rows/dim, cols/dim)] * non_div[(dim,dim)]
+        count = count % RESULT_MOD
 
         if south_rows > 0:
+            # South part
             shapes.append((mult * south_cols / dim, south_rows, south_rows))
 
             if east_cols > 0:
+                # South-east part
                 shapes.append((mult, south_rows, min(south_rows, east_cols)))
 
         if east_rows > 0 and east_cols > 0:
+            # East part
             shapes.append((mult * east_rows / dim, dim, east_cols))
 
-    return count % RESULT_MOD
+    return count
 
 
 def main():
