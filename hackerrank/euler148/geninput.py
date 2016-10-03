@@ -2,7 +2,7 @@
 
 from random import randint
 
-NUM_CASES = 10000
+NUM_CASES = 30000
 MAX_ROWS = 1000000000000000000
 
 print NUM_CASES

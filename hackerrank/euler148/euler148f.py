@@ -16,6 +16,9 @@ DIV = 7
 # dimension of a square triangle we will attempt to decompose the input into
 MAX_POWER = 21
 
+# Largest triangle dimension whose number of non-divisibles will be memorized
+MAX_DIM_MEM = DIV ** 17
+
 # Results must be reported in modulo 10 ^ 9 + 7
 RESULT_MOD = 10 ** 9 + 7
 
@@ -24,14 +27,14 @@ non_div = {(0,0): 0}
 
 # Pre-compute the number of elements in shapes up to DIV x DIV,
 # all of which are non-divisible by DIV
-for cols in range(1, DIV + 1):
+for cols in xrange(1, DIV + 1):
     non_div[cols, cols] = non_div[cols - 1, cols - 1] + cols
-    for rows in range(cols + 1, DIV + 1):
+    for rows in xrange(cols + 1, DIV + 1):
         non_div[rows,cols] = non_div[rows - 1,cols] + cols
 
 # Pre-compute the number of non-divisible elements in triangles whose number of
 # rows and columns is a power of DIV
-for power in range(2, MAX_POWER + 1):
+for power in xrange(2, MAX_POWER + 1):
     non_div[DIV ** power, DIV ** power] = ((DIV ** 2 + DIV) / 2) ** power
 
 # Stack with shapes that need to be processed
@@ -49,8 +52,8 @@ def accumulate(sub_shape_count):
 
     while sub_shapes == 0:
 
-        if rows == cols:
-            # Remember triangular results
+        if rows == cols and rows <= MAX_DIM_MEM:
+            # Remember triangular results up to a certain dimension
             non_div[rows,cols] = count
 
         if not accumulator:
@@ -86,7 +89,7 @@ def count_non_div(rows, cols):
 
         if (rows,cols) in non_div:
             result = accumulate(mult * non_div[rows,cols])
-            if result:
+            if result is not None:
                 return result
             else:
                 continue
@@ -147,14 +150,14 @@ def count_non_div(rows, cols):
             accumulator.append((mult, rows, cols, sub_shapes, count))
         else:
             result = accumulate(mult * count)
-            if result:
+            if result is not None:
                 return result
 
 
 def main():
 
     input_size = input()
-    for _ in range(input_size):
+    for _ in xrange(input_size):
         rows, cols = [int(x) for x in raw_input().split()]
         print count_non_div(rows, cols)
 

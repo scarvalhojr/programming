@@ -23,15 +23,15 @@ non_div = {(0,0): 0}
 
 # Pre-compute the number of elements in shapes up to DIV x DIV,
 # all of which are non-divisible by DIV
-for cols in range(1, DIV + 1):
-    non_div[(cols, cols)] = non_div[(cols - 1, cols - 1)] + cols
-    for rows in range(cols + 1, DIV + 1):
-        non_div[(rows,cols)] = non_div[(rows - 1,cols)] + cols
+for cols in xrange(1, DIV + 1):
+    non_div[cols, cols] = non_div[cols - 1, cols - 1] + cols
+    for rows in xrange(cols + 1, DIV + 1):
+        non_div[rows,cols] = non_div[rows - 1,cols] + cols
 
 # Pre-compute the number of non-divisible elements in triangles whose number of
 # rows and columns is a power of DIV
-for power in range(2, MAX_POWER + 1):
-    non_div[(DIV ** power, DIV ** power)] = ((DIV ** 2 + DIV) / 2) ** power
+for power in xrange(2, MAX_POWER + 1):
+    non_div[DIV ** power, DIV ** power] = ((DIV ** 2 + DIV) / 2) ** power
 
 
 def count_non_div(rows, cols):
@@ -39,23 +39,28 @@ def count_non_div(rows, cols):
     # assert rows >= 0 and cols >= 0 and cols <= rows
 
     if (rows,cols) in non_div:
-        return non_div[(rows, cols)]
-
-    count = 0
+        return non_div[rows, cols]
 
     # Find the dimension of the largest "square" triangle that
     # the given shape could be decomposed into
     dim = DIV ** int(log(cols, DIV))
+    if cols < dim:
+        dim = dim / DIV
+
+    count = 0
 
     if rows > dim * DIV:
 
         # This is a "tall" shape
         dim = DIV ** int(log(rows, DIV))
-        if rows == dim:
+        if rows <= dim:
             dim = dim / DIV
 
         # The central part
-        count += (rows / dim) * count_non_div(dim, cols)
+        count = (rows / dim) * count_non_div(dim, cols)
+
+        # Remember this result
+        non_div[(rows/dim) * dim, cols] = count
 
         # The south part
         south_rows = rows - dim * (rows / dim)
@@ -63,7 +68,10 @@ def count_non_div(rows, cols):
             count += count_non_div(south_rows, min(south_rows, cols))
 
         count = count % RESULT_MOD
-        non_div[(rows,cols)] = count
+
+        # Shapes found here are unlikely to be useful later
+        # so do not memorize them
+        #non_div[rows,cols] = count
 
         return count
 
@@ -76,7 +84,7 @@ def count_non_div(rows, cols):
 
     # Central part: we can use the non_div dictionary to calculate the
     # number of "square" triangles that fit inside the central part
-    count += non_div[(rows/dim, cols/dim)] * non_div[(dim,dim)]
+    count += non_div[rows/dim, cols/dim] * non_div[dim,dim]
 
     if south_rows > 0:
         # South part
@@ -91,7 +99,10 @@ def count_non_div(rows, cols):
         count += (east_rows / dim) * count_non_div(dim, east_cols)
 
     count = count % RESULT_MOD
-    non_div[(rows,cols)] = count
+
+    if rows == cols:
+        # Only memorize triangular shapes
+        non_div[rows,cols] = count
 
     return count
 
@@ -99,7 +110,7 @@ def count_non_div(rows, cols):
 def main():
 
     input_size = input()
-    for _ in range(input_size):
+    for _ in xrange(input_size):
         rows, cols = [int(x) for x in raw_input().split()]
         if rows <= 0 or cols <= 0:
             print 0
