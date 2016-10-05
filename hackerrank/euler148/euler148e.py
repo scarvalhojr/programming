@@ -13,7 +13,7 @@ DIV = 7
 # MAX_POWER is the largest power p such that DIV ^ p <= 10 ^ 18, which is
 # the largest input we're supposed to handle, so DIV ^ MAX_POWER is the largest
 # dimension of triangles we will attempt to decompose the shapes into
-MAX_POWER = 22
+MAX_POWER = 21
 
 # Results must be reported in modulo 10 ^ 9 + 7
 RESULT_MOD = 10 ** 9 + 7

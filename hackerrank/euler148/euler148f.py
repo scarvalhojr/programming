@@ -11,9 +11,9 @@ from collections import deque
 # of the triangle cannot be divided by
 DIV = 7
 
-# MAX_POWER is the largest power p such that DIV ^ p <= 10 ^ 18, which is
-# the largest input we're supposed to handle, so DIV ^ MAX_POWER is the largest
-# dimension of a square triangle we will attempt to decompose the input into
+# MAX_POWER is the largest power p such that DIV ^ p <= 10 ^ 18,
+# which is the largest input, so DIV ^ MAX_POWER is the largest
+# dimension of a square triangle to get decomposed shapes into
 MAX_POWER = 21
 
 # Largest triangle dimension whose number of non-divisibles will be memorized
@@ -35,7 +35,8 @@ for cols in xrange(1, DIV + 1):
 # Pre-compute the number of non-divisible elements in triangles whose number of
 # rows and columns is a power of DIV
 for power in xrange(2, MAX_POWER + 1):
-    non_div[DIV ** power, DIV ** power] = ((DIV ** 2 + DIV) / 2) ** power
+    dim = DIV ** power
+    non_div[dim, dim] = (((DIV ** 2 + DIV) / 2) ** power) % RESULT_MOD
 
 # Stack with shapes that need to be processed
 shapes = deque()
@@ -80,7 +81,9 @@ def count_non_div(rows, cols):
     if (rows,cols) in non_div:
         return non_div[rows, cols]
 
+    #shapes.clear()
     shapes.append((1, rows, cols))
+    #accumulator.clear()
     accumulator.append((1, rows, cols, 1, 0))
 
     while True:
@@ -103,8 +106,8 @@ def count_non_div(rows, cols):
 
         if rows <= dim * DIV:
 
-            # Decompose the shape into up to four parts: central (with "square"
-            # triangles), south, east, and south-east
+            # Decompose the shape into central (with "square" triangles),
+            # south, east, and south-east parts
             east_cols = cols - dim * (cols / dim)
             south_cols = cols - east_cols
             south_rows = rows - dim * (rows / dim)
@@ -160,7 +163,8 @@ def main():
     for _ in xrange(input_size):
         rows, cols = [int(x) for x in raw_input().split()]
         print count_non_div(rows, cols)
-
+        #assert not shapes
+        #assert not accumulator
 
 if __name__ == '__main__':
 
