@@ -1,6 +1,6 @@
 #!/usr/bin/env python
 
-from solution2 import Solution
+from solution_b import Solution
 
 
 def main():
