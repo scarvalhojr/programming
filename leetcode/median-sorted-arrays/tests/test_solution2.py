@@ -25,16 +25,16 @@ class TestOddTotalLengthNoRepeat(TestCase, TestOddTotalLengthNoRepeat):
         self.solution = Solution()
 
 
-#class TestOddTotalLengthWithRepeat(TestCase, TestOddTotalLengthWithRepeat):
-#
-#    def setUp(self):
-#        self.solution = Solution()
+class TestOddTotalLengthWithRepeat(TestCase, TestOddTotalLengthWithRepeat):
+
+    def setUp(self):
+        self.solution = Solution()
 
 
-#class TestEvenTotalLengthNoRepeat(TestCase, TestEvenTotalLengthNoRepeat):
-#
-#    def setUp(self):
-#        self.solution = Solution()
+class TestEvenTotalLengthNoRepeat(TestCase, TestEvenTotalLengthNoRepeat):
+
+    def setUp(self):
+        self.solution = Solution()
 
 
 class TestEvenTotalLengthWithRepeat(TestCase, TestEvenTotalLengthWithRepeat):
