@@ -6,7 +6,8 @@ from os.path import basename, splitext
 from random import randint
 #from solution1 import Solution as Solution1
 from solution2 import Solution as Solution2
-from solution3 import Solution as Solution3
+#from solution3 import Solution as Solution3
+from solution4 import Solution as Solution4
 
 
 NUM_TESTS = 3
@@ -22,7 +23,7 @@ def main():
         NUM_ELEMS_1, NUM_ELEMS_2, -MAX_NUMBER, MAX_NUMBER)
 
     solver_a = Solution2()
-    solver_b = Solution3()
+    solver_b = Solution4()
 
     module_a = splitext(basename(modules[solver_a.__module__].__file__))[0]
     module_b = splitext(basename(modules[solver_b.__module__].__file__))[0]
