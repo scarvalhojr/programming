@@ -2,7 +2,8 @@
 
 from unittest import TestCase
 from base import TestCornerCases, TestBasic, TestOddTotalLengthNoRepeat, \
-    TestOddTotalLengthWithRepeat, TestEvenTotalLengthNoRepeat
+    TestOddTotalLengthWithRepeat, TestEvenTotalLengthNoRepeat, \
+    TestEvenTotalLengthWithRepeat
 from solution2 import Solution
 
 
@@ -34,6 +35,13 @@ class TestOddTotalLengthNoRepeat(TestCase, TestOddTotalLengthNoRepeat):
 #
 #    def setUp(self):
 #        self.solution = Solution()
+
+
+class TestEvenTotalLengthWithRepeat(TestCase, TestEvenTotalLengthWithRepeat):
+
+    def setUp(self):
+        self.solution = Solution()
+
 
 if __name__ == '__main__':
 

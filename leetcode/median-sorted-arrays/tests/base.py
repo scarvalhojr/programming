@@ -73,6 +73,11 @@ class TestOddTotalLengthNoRepeat(object):
         result = self.solution.findMedianSortedArrays(nums1, nums2)
         self.assertEquals(result, 18.0)
 
+        nums1 = [4, 5, 6, 7, 8, 9, 10, 11]
+        nums2 = [1, 2, 3]
+        result = self.solution.findMedianSortedArrays(nums1, nums2)
+        self.assertEquals(result, 6.0)
+
 
 class TestOddTotalLengthWithRepeat(object):
 
@@ -155,3 +160,57 @@ class TestEvenTotalLengthNoRepeat(object):
         nums2 = [9]
         result = self.solution.findMedianSortedArrays(nums1, nums2)
         self.assertEquals(result, 5.5)
+
+        nums1 = [0, 1, 2, 4, 6, 8, 15, 16, 17]
+        nums2 = [3, 5, 7, 9, 10, 11, 12, 13, 14, 18, 19]
+        result = self.solution.findMedianSortedArrays(nums1, nums2)
+        self.assertEquals(result, 9.5)
+
+
+class TestEvenTotalLengthWithRepeat(object):
+
+    def test_basic(self):
+        nums1 = [1, 2, 4, 5, 5, 7]
+        nums2 = [3, 5, 5, 6, 8, 9]
+        result = self.solution.findMedianSortedArrays(nums1, nums2)
+        self.assertEquals(result, 5.0)
+
+        nums1 = [1, 2, 4, 5, 5, 8]
+        nums2 = [3, 4, 5, 6, 8, 9]
+        result = self.solution.findMedianSortedArrays(nums1, nums2)
+        self.assertEquals(result, 5.0)
+
+        nums1 = [1, 2, 4, 4, 5, 9]
+        nums2 = [3, 5, 5, 6, 8, 9]
+        result = self.solution.findMedianSortedArrays(nums1, nums2)
+        self.assertEquals(result, 5.0)
+
+        nums1 = [1, 2, 4, 4, 5, 5]
+        nums2 = [3, 6, 6, 6, 8, 9]
+        result = self.solution.findMedianSortedArrays(nums1, nums2)
+        self.assertEquals(result, 5.0)
+
+        nums1 = [1, 2, 5, 5, 5, 5]
+        nums2 = [5, 5, 5, 6, 8, 9]
+        result = self.solution.findMedianSortedArrays(nums1, nums2)
+        self.assertEquals(result, 5.0)
+
+        nums1 = [1, 5, 5, 5, 5, 5]
+        nums2 = [5, 5, 5, 5, 8, 9]
+        result = self.solution.findMedianSortedArrays(nums1, nums2)
+        self.assertEquals(result, 5.0)
+
+        nums1 = [1, 2, 3, 6, 8, 10, 11, 14, 14, 27]
+        nums2 = [4, 7, 9, 11, 14, 14, 15, 18, 22, 25, 26, 28, 30, 33, 35, 38]
+        result = self.solution.findMedianSortedArrays(nums1, nums2)
+        self.assertEquals(result, 14.0)
+
+        nums1 = [1, 2, 3, 6, 6, 6, 6, 6, 14, 27]
+        nums2 = [4, 7, 9, 11, 14, 15, 15, 18, 18, 25, 25, 30, 30, 30, 35, 38]
+        result = self.solution.findMedianSortedArrays(nums1, nums2)
+        self.assertEquals(result, 14.0)
+
+        nums1 = [1, 2, 3, 8, 8, 8, 17, 17, 17, 18, 18, 27]
+        nums2 = [17, 22, 22, 22, 28, 30, 33, 33, 33, 33]
+        result = self.solution.findMedianSortedArrays(nums1, nums2)
+        self.assertEquals(result, 18.0)
