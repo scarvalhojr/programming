@@ -55,7 +55,7 @@ class Solution(object):
 
             left = pos_a + pos_b - 1
 
-            if numbers[array_b][pos_b] < numbers[array_a][pos_a]:
+            if numbers[array_b][pos_b] <= numbers[array_a][pos_a]:
                 left += 1
                 med_1 = numbers[array_b][pos_b]
             elif pos_b > 0:
@@ -63,19 +63,29 @@ class Solution(object):
             else:
                 med_1 = None
 
+            if pos_a > 0 and numbers[array_a][pos_a - 1] > med_1:
+                med_1 = numbers[array_a][pos_a - 1]
+
             diff = total_len - 2 * left - 2
 
-            #while diff > 0 and pos_b <= end[array_b]:
-            #    # account for repetitions in array_b
-            #    if numbers[array_a][pos_a] != numbers[array_b][pos_b]:
-            #        break
-            #    pos_b += 1
-            #    diff -= 2
+            # account for repetitions
+            if numbers[array_b][pos_b] == numbers[array_a][pos_a]:
+
+                pos_c = pos_b + 1
+                while diff > 0 and pos_c <= end[array_b]:
+                    if numbers[array_b][pos_c] == med_1:
+                        pos_c += 1
+                        diff -= 2
+                    else:
+                        break
+
+                if diff == -2 and (pos_a > 0 or pos_b > 0):
+                    med_1a = numbers[array_a][pos_a - 1] if pos_a > 0 else None
+                    med_1b = numbers[array_b][pos_b - 1] if pos_b > 0 else None
+                    med_1 = max(med_1a, med_1b)
+                    diff = 0
 
             if diff == 0:
-                if pos_a > 0 and numbers[array_a][pos_a - 1] > med_1:
-                    med_1 = numbers[array_a][pos_a - 1]
-
                 return (med_1 + numbers[array_a][pos_a]) / 2.0
 
             if abs(diff) == 2:
@@ -85,7 +95,7 @@ class Solution(object):
 
             if shift < 0:
                 shift = max(shift, start[array_a] - pos_a)
-                end[array_b] = pos_b
+                end[array_b] = min(end[array_b], pos_b)
             else: # shift > 0
                 shift = min(shift, end[array_a] - pos_a)
                 start[array_b] = pos_b
@@ -128,7 +138,7 @@ class Solution(object):
             diff = total_len - 2 * left - 1
 
             while diff > 0 and pos_b <= end[array_b]:
-                # account for repetitions in array_b
+                # account for repetitions
                 if numbers[array_a][pos_a] != numbers[array_b][pos_b]:
                     break
                 pos_b += 1

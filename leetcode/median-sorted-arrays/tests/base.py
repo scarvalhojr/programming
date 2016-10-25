@@ -166,6 +166,11 @@ class TestEvenTotalLengthNoRepeat(object):
         result = self.solution.findMedianSortedArrays(nums1, nums2)
         self.assertEquals(result, 9.5)
 
+        nums1 = [-3, 2, 6]
+        nums2 = [-6, -5, -4, -2, -1, 1, 3, 4, 5]
+        result = self.solution.findMedianSortedArrays(nums1, nums2)
+        self.assertEquals(result, 0.0)
+
 
 class TestEvenTotalLengthWithRepeat(object):
 
@@ -214,3 +219,19 @@ class TestEvenTotalLengthWithRepeat(object):
         nums2 = [17, 22, 22, 22, 28, 30, 33, 33, 33, 33]
         result = self.solution.findMedianSortedArrays(nums1, nums2)
         self.assertEquals(result, 18.0)
+
+        nums1 = [-15, -14, -9, -7, -3, 0, 1, 2, 6, 7, 8, 8, 8, 9, 10, 15]
+        nums2 = [-17, -16, -13, -13, -12, -11, -10, -8, -6, -5, -4, -2, -1, 1,
+                 2, 3, 4, 5, 9, 10, 11, 12, 13, 14]
+        result = self.solution.findMedianSortedArrays(nums1, nums2)
+        self.assertEquals(result, 1.0)
+
+        nums1 = [1, 3, 4, 5, 8, 10, 11, 12]
+        nums2 = [6, 7, 7, 9]
+        result = self.solution.findMedianSortedArrays(nums1, nums2)
+        self.assertEquals(result, 7.0)
+
+        nums1 = [1, 2, 4, 10, 11, 14]
+        nums2 = [3, 5, 6, 7, 8, 10, 12, 13, 15, 16]
+        result = self.solution.findMedianSortedArrays(nums1, nums2)
+        self.assertEquals(result, 9.0)
