@@ -1,0 +1,12 @@
+10
+move 2 onto 7
+move -2 onto 7
+move 2 onto 14
+mode 8 onto 6
+move 8 into 6
+move 8 over 3
+pile 1 over 6
+pile 1 onto 6
+quit
+move 8 onto 2
+move 5 over 1
